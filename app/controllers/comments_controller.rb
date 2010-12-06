@@ -23,12 +23,16 @@ class CommentsController < ApplicationController
         CommentMailer.deliver_comment_notification(comment)
       end
     end
+
+    flash[:selected_comment] = comment.id
     
     if comment.approved?
       redirect_to "#{@page.url}comments#comment-#{comment.id}"
     elsif Comment.spam_filter == MollomSpamFilter && MollomSpamFilter.mollom_response(comment).to_s == 'unsure'
       set_up_page_with_captcha(comment)
       render :text => @page.render and return
+    elsif comment.unapproved?
+      redirect_to "#{@page.url}comments#comment-#{comment.id}"
     else
       @page.posted_comment_is_spam = true
       #comment.destroy
