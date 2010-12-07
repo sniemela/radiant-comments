@@ -1,4 +1,7 @@
 require File.expand_path("../lib/radiant-comments-extension/version", __FILE__)
+
+require 'rubygems'
+
 class CommentsExtension < Radiant::Extension
   version RadiantCommentsExtension::VERSION
   description "Adds blog-like comments and comment functionality to pages."
